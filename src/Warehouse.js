@@ -98,4 +98,13 @@ function removeQuantity(articleName, quantity)
     return warehouse[articleName].quantity;
 }
 
-module.exports = Warehouse;
+module.exports = {
+    consultQuantity,
+    consultLowQuantityFlagTrigger,
+    consultLowQuantityFlag,
+    consultOutOfStockFlag,
+    consultJson,
+    setLowQuantityFlagTrigger,
+    addQuantity,
+    removeQuantity
+};
