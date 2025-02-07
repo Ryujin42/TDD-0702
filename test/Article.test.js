@@ -1,7 +1,9 @@
-const { addQuantity, consultJson } = require("../src/Warehouse");
-const { consultQuantity} = require("../src/Warehouse")
-const { removeQuantity} = require("../src/Warehouse")
-const {consultFlagLowQuantity}= require("../src/Warehouse")
+const { addQuantity,
+    consultQuantity,
+    removeQuantity, consultJson,
+    consultLowQuantityFlag,
+    consultOutOfStockFlag
+} = require("../src/Stock");
 
 describe("Gestion des stocks", () => {
     
@@ -68,8 +70,8 @@ describe("Consultation de la quantité d'un article", () => {
     test("Article existant : doit retourner la quantité correcte", () => {
         addQuantity("Écran", 7);
         expect(consultQuantity("Écran")).toBe(7);
-        expect(consultFlagLowQuantity("Écran").toBe(true));
-        expect(consultFlagOutOfStock("Écran").toBe(false));
+        expect(consultLowQuantityFlag("Écran").toBe(true));
+        expect(consultOutOfStockFlag("Écran").toBe(false));
     });
 
     test("Article inexistant : doit générer une erreur", () => {
