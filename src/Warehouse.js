@@ -1,86 +1,101 @@
-class Warehouse
-{
-    constructor(articleSet, lowQuantity = 10)
-    {
-        this.articleSet = articleSet;
-        this.lowQuantity = lowQuantity;
-    }
+const Article = require('./Article');
 
-    getQuantity(articleName)
-    {
-        return this.articleSet[articleName].quantity;
-    }
-
-    getLowQuantityFlag(articleName)
-    {
-        return this.articleSet[articleName].lowQuantityFlag;
-    }
-
-    getOutOfStockFlag(articleName)
-    {
-        return this.articleSet[articleName].outOfStockFlag;
-    }
-
-    getJson()
-    {
-        return JSON.stringify(this.articleSet);
-    }
-
-    addQuantity(articleName, quantity)
-    {
-        if (quantity < 0)
-        {
-            throw new Error('Quantity must be positive');
-        }
-
-        this.articleSet[articleName].quantity += quantity;
-        this.articleSet[articleName].lowQuantityFlag = quantity <= this.lowQuantity;
-        this.articleSet[articleName].outOfStockFlag = false;
-
-        return this.articleSet[articleName].quantity;
-    }
-
-    removeQuantity(articleName, quantity)
-    {
-        if (quantity < 0)
-        {
-            throw new Error('Quantity must be positive');
-        }
-
-        if (this.articleSet[articleName].quantity < quantity)
-        {
-            throw new Error('Not enough quantity');
-        }
-
-        this.articleSet[articleName].quantity -= quantity;
-        this.articleSet[articleName].lowQuantityFlag = quantity <= this.lowQuantity;
-        this.articleSet[articleName].outOfStockFlag = this.articleSet[articleName].quantity === 0;
-
-        return this.articleSet[articleName].quantity;
-    }
+const warehouse = {
+    "Clavier": {
+        "quantity": 0,
+        "lowQuantityFlagTrigger": 10,
+        "lowQuantityFlag": true,
+        "outOfStockFlag": true
+    },
+    "Souris": {
+        "quantity": 0,
+        "lowQuantityFlagTrigger": 10,
+        "lowQuantityFlag": true,
+        "outOfStockFlag": true
+    },
+    "Ecran": {
+        "quantity": 0,
+        "lowQuantityFlagTrigger": 10,
+        "lowQuantityFlag": true,
+        "outOfStockFlag": true
+    },
+    "Clé USB": {
+        "quantity": 0,
+        "lowQuantityFlagTrigger": 10,
+        "lowQuantityFlag": true,
+        "outOfStockFlag": true
+    },
 }
 
-warehouse = new Warehouse({
-    'Clavier': {
-        quantity: 0,
-        lowQuantityFlag: true,
-        outOfStockFlag: true
-    },
-    'Souris': {
-        quantity: 0,
-        lowQuantityFlag: true,
-        outOfStockFlag: true
-    },
-    'Écran': {
-        quantity: 0,
-        lowQuantityFlag: true,
-        outOfStockFlag: true
-    },
-    'Clé USB': {
-        quantity: 0,
-        lowQuantityFlag: true,
-        outOfStockFlag: true
+function consultQuantity(articleName)
+{
+    if (warehouse[articleName] === undefined)
+    {
+        throw new Error('Article not found');
     }
-});
+
+    return warehouse[articleName].quantity;
+}
+
+function consultLowQuantityFlagTrigger(articleName)
+{
+    return warehouse[articleName].lowQuantityFlagTrigger;
+}
+
+function consultLowQuantityFlag(articleName)
+{
+    return warehouse[articleName].lowQuantityFlag;
+}
+
+function consultOutOfStockFlag(articleName)
+{
+    return warehouse[articleName].outOfStockFlag;
+}
+
+function consultJson()
+{
+    return JSON.stringify(warehouse);
+}
+
+function setLowQuantityFlagTrigger(articleName, lowQuantityFlagTrigger)
+{
+    warehouse[articleName].lowQuantityFlagTrigger = lowQuantityFlagTrigger;
+    warehouse[articleName].lowQuantityFlag = warehouse[articleName].quantity <= lowQuantityFlagTrigger;
+
+    return warehouse[articleName].lowQuantityFlagTrigger;
+}
+
+function addQuantity(articleName, quantity)
+{
+    if (quantity < 0)
+    {
+        throw new Error('Quantity must be positive');
+    }
+
+    warehouse[articleName].quantity += quantity;
+    warehouse[articleName].lowQuantityFlag = quantity <= warehouse[articleName].lowQuantityFlagTrigger;
+    warehouse[articleName].outOfStockFlag = warehouse[articleName].quantity === 0;
+
+    return warehouse[articleName].quantity;
+}
+
+function removeQuantity(articleName, quantity)
+{
+    if (quantity < 0)
+    {
+        throw new Error('Quantity must be positive');
+    }
+
+    if (warehouse[articleName].quantity < quantity)
+    {
+        throw new Error('Not enough quantity');
+    }
+
+    warehouse[articleName].quantity -= quantity;
+    warehouse[articleName].lowQuantityFlag = quantity <= warehouse[articleName].lowQuantityFlagTrigger;
+    warehouse[articleName].outOfStockFlag = warehouse[articleName].quantity === 0;
+
+    return warehouse[articleName].quantity;
+}
 
 module.exports = Warehouse;
