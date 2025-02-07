@@ -39,16 +39,31 @@ function consultQuantity(articleName)
 
 function consultLowQuantityFlagTrigger(articleName)
 {
+    if (stock[articleName] === undefined)
+    {
+        throw new Error('Article not found');
+    }
+
     return stock[articleName].lowQuantityFlagTrigger;
 }
 
 function consultLowQuantityFlag(articleName)
 {
+    if (stock[articleName] === undefined)
+    {
+        throw new Error('Article not found');
+    }
+
     return stock[articleName].lowQuantityFlag;
 }
 
 function consultOutOfStockFlag(articleName)
 {
+    if (stock[articleName] === undefined)
+    {
+        throw new Error('Article not found');
+    }
+
     return stock[articleName].outOfStockFlag;
 }
 
@@ -59,6 +74,11 @@ function consultJson()
 
 function setLowQuantityFlagTrigger(articleName, lowQuantityFlagTrigger)
 {
+    if (stock[articleName] === undefined)
+    {
+        throw new Error('Article not found');
+    }
+
     stock[articleName].lowQuantityFlagTrigger = lowQuantityFlagTrigger;
     stock[articleName].lowQuantityFlag = stock[articleName].quantity <= lowQuantityFlagTrigger;
 
@@ -67,6 +87,11 @@ function setLowQuantityFlagTrigger(articleName, lowQuantityFlagTrigger)
 
 function addQuantity(articleName, quantity)
 {
+    if (stock[articleName] === undefined)
+    {
+        throw new Error('Article not found');
+    }
+
     if (quantity < 0)
     {
         throw new Error('Quantity must be positive');
@@ -81,6 +106,11 @@ function addQuantity(articleName, quantity)
 
 function removeQuantity(articleName, quantity)
 {
+    if (stock[articleName] === undefined)
+    {
+        throw new Error('Article not found');
+    }
+
     if (quantity < 0)
     {
         throw new Error('Quantity must be positive');
