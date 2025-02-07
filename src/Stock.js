@@ -29,8 +29,11 @@ const stock = {
 
 function consultQuantity(articleName)
 {
-    if (stock[articleName] === undefined)
-    {
+    if (typeof articleName !== 'string') {
+        throw new Error('Article name must be a string');
+    }
+
+    if (stock[articleName] === undefined) {
         throw new Error('Article not found');
     }
 
@@ -39,8 +42,11 @@ function consultQuantity(articleName)
 
 function consultLowQuantityFlagTrigger(articleName)
 {
-    if (stock[articleName] === undefined)
-    {
+    if (typeof articleName !== 'string') {
+        throw new Error('Article name must be a string');
+    }
+
+    if (stock[articleName] === undefined) {
         throw new Error('Article not found');
     }
 
@@ -49,8 +55,11 @@ function consultLowQuantityFlagTrigger(articleName)
 
 function consultLowQuantityFlag(articleName)
 {
-    if (stock[articleName] === undefined)
-    {
+    if (typeof articleName !== 'string') {
+        throw new Error('Article name must be a string');
+    }
+
+    if (stock[articleName] === undefined) {
         throw new Error('Article not found');
     }
 
@@ -59,8 +68,11 @@ function consultLowQuantityFlag(articleName)
 
 function consultOutOfStockFlag(articleName)
 {
-    if (stock[articleName] === undefined)
-    {
+    if (typeof articleName !== 'string') {
+        throw new Error('Article name must be a string');
+    }
+
+    if (stock[articleName] === undefined) {
         throw new Error('Article not found');
     }
 
@@ -74,9 +86,19 @@ function consultJson()
 
 function setLowQuantityFlagTrigger(articleName, lowQuantityFlagTrigger)
 {
-    if (stock[articleName] === undefined)
-    {
+    if (typeof articleName !== 'string') {
+        throw new Error('Article name must be a string');
+    }
+
+    if (typeof lowQuantityFlagTrigger !== 'number') {
+        throw new Error('Low quantity flag trigger must be a number');
+    }
+    if (stock[articleName] === undefined) {
         throw new Error('Article not found');
+    }
+
+    if (lowQuantityFlagTrigger < 0) {
+        throw new Error('Low quantity flag trigger must be positive');
     }
 
     stock[articleName].lowQuantityFlagTrigger = lowQuantityFlagTrigger;
@@ -87,13 +109,19 @@ function setLowQuantityFlagTrigger(articleName, lowQuantityFlagTrigger)
 
 function addQuantity(articleName, quantity)
 {
-    if (stock[articleName] === undefined)
-    {
+    if (typeof articleName !== 'string') {
+        throw new Error('Article name must be a string');
+    }
+
+    if (typeof quantity !== 'number') {
+        throw new Error('Quantity must be a number');
+    }
+
+    if (stock[articleName] === undefined) {
         throw new Error('Article not found');
     }
 
-    if (quantity < 0)
-    {
+    if (quantity < 0) {
         throw new Error('Quantity must be positive');
     }
 
@@ -106,18 +134,23 @@ function addQuantity(articleName, quantity)
 
 function removeQuantity(articleName, quantity)
 {
-    if (stock[articleName] === undefined)
-    {
+    if (typeof articleName !== 'string') {
+        throw new Error('Article name must be a string');
+    }
+
+    if (typeof quantity !== 'number') {
+        throw new Error('Quantity must be a number');
+    }
+
+    if (stock[articleName] === undefined) {
         throw new Error('Article not found');
     }
 
-    if (quantity < 0)
-    {
+    if (quantity < 0) {
         throw new Error('Quantity must be positive');
     }
 
-    if (stock[articleName].quantity < quantity)
-    {
+    if (stock[articleName].quantity < quantity) {
         throw new Error('Not enough quantity');
     }
 
