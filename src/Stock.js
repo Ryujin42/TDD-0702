@@ -90,11 +90,12 @@ function setLowQuantityFlagTrigger(articleName, lowQuantityFlagTrigger)
         throw new Error('Article name must be a string');
     }
 
-    if (typeof lowQuantityFlagTrigger !== 'number') {
-        throw new Error('Low quantity flag trigger must be a number');
-    }
     if (stock[articleName] === undefined) {
         throw new Error('Article not found');
+    }
+
+    if (typeof lowQuantityFlagTrigger !== 'number' || !Number.isInteger(lowQuantityFlagTrigger) || lowQuantityFlagTrigger < 0) {
+        throw new Error('Low quantity flag trigger must be an integer');
     }
 
     if (lowQuantityFlagTrigger < 0) {
@@ -113,16 +114,12 @@ function addQuantity(articleName, quantity)
         throw new Error('Article name must be a string');
     }
 
-    if (typeof quantity !== 'number') {
-        throw new Error('Quantity must be a number');
+    if (typeof quantity !== 'number' || !Number.isInteger(quantity) || quantity < 0) {
+        throw new Error('Quantity must be a positive integer');
     }
 
     if (stock[articleName] === undefined) {
         throw new Error('Article not found');
-    }
-
-    if (quantity < 0) {
-        throw new Error('Quantity must be positive');
     }
 
     stock[articleName].quantity += quantity;
@@ -138,16 +135,12 @@ function removeQuantity(articleName, quantity)
         throw new Error('Article name must be a string');
     }
 
-    if (typeof quantity !== 'number') {
-        throw new Error('Quantity must be a number');
+    if (typeof quantity !== 'number' || !Number.isInteger(quantity) || quantity < 0) {
+        throw new Error('Quantity must be a positive integer');
     }
 
     if (stock[articleName] === undefined) {
         throw new Error('Article not found');
-    }
-
-    if (quantity < 0) {
-        throw new Error('Quantity must be positive');
     }
 
     if (stock[articleName].quantity < quantity) {
