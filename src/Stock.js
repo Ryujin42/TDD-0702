@@ -1,6 +1,6 @@
 const Article = require('./Article');
 
-const warehouse = {
+const stock = {
     "Clavier": {
         "quantity": 0,
         "lowQuantityFlagTrigger": 10,
@@ -29,40 +29,40 @@ const warehouse = {
 
 function consultQuantity(articleName)
 {
-    if (warehouse[articleName] === undefined)
+    if (stock[articleName] === undefined)
     {
         throw new Error('Article not found');
     }
 
-    return warehouse[articleName].quantity;
+    return stock[articleName].quantity;
 }
 
 function consultLowQuantityFlagTrigger(articleName)
 {
-    return warehouse[articleName].lowQuantityFlagTrigger;
+    return stock[articleName].lowQuantityFlagTrigger;
 }
 
 function consultLowQuantityFlag(articleName)
 {
-    return warehouse[articleName].lowQuantityFlag;
+    return stock[articleName].lowQuantityFlag;
 }
 
 function consultOutOfStockFlag(articleName)
 {
-    return warehouse[articleName].outOfStockFlag;
+    return stock[articleName].outOfStockFlag;
 }
 
 function consultJson()
 {
-    return JSON.stringify(warehouse);
+    return JSON.stringify(stock);
 }
 
 function setLowQuantityFlagTrigger(articleName, lowQuantityFlagTrigger)
 {
-    warehouse[articleName].lowQuantityFlagTrigger = lowQuantityFlagTrigger;
-    warehouse[articleName].lowQuantityFlag = warehouse[articleName].quantity <= lowQuantityFlagTrigger;
+    stock[articleName].lowQuantityFlagTrigger = lowQuantityFlagTrigger;
+    stock[articleName].lowQuantityFlag = stock[articleName].quantity <= lowQuantityFlagTrigger;
 
-    return warehouse[articleName].lowQuantityFlagTrigger;
+    return stock[articleName].lowQuantityFlagTrigger;
 }
 
 function addQuantity(articleName, quantity)
@@ -72,11 +72,11 @@ function addQuantity(articleName, quantity)
         throw new Error('Quantity must be positive');
     }
 
-    warehouse[articleName].quantity += quantity;
-    warehouse[articleName].lowQuantityFlag = quantity <= warehouse[articleName].lowQuantityFlagTrigger;
-    warehouse[articleName].outOfStockFlag = warehouse[articleName].quantity === 0;
+    stock[articleName].quantity += quantity;
+    stock[articleName].lowQuantityFlag = quantity <= stock[articleName].lowQuantityFlagTrigger;
+    stock[articleName].outOfStockFlag = stock[articleName].quantity === 0;
 
-    return warehouse[articleName].quantity;
+    return stock[articleName].quantity;
 }
 
 function removeQuantity(articleName, quantity)
@@ -86,16 +86,16 @@ function removeQuantity(articleName, quantity)
         throw new Error('Quantity must be positive');
     }
 
-    if (warehouse[articleName].quantity < quantity)
+    if (stock[articleName].quantity < quantity)
     {
         throw new Error('Not enough quantity');
     }
 
-    warehouse[articleName].quantity -= quantity;
-    warehouse[articleName].lowQuantityFlag = quantity <= warehouse[articleName].lowQuantityFlagTrigger;
-    warehouse[articleName].outOfStockFlag = warehouse[articleName].quantity === 0;
+    stock[articleName].quantity -= quantity;
+    stock[articleName].lowQuantityFlag = quantity <= stock[articleName].lowQuantityFlagTrigger;
+    stock[articleName].outOfStockFlag = stock[articleName].quantity === 0;
 
-    return warehouse[articleName].quantity;
+    return stock[articleName].quantity;
 }
 
 module.exports = {
