@@ -1,16 +1,38 @@
-const { addQuantity } = require("../src/Warehouse");
+const { addQuantity, consultJson } = require("../src/Warehouse");
 const { consultQuantity} = require("../src/Warehouse")
 const { removeQuantity} = require("../src/Warehouse")
-const {consultFlag}= require("../src/Warehouse")
+const {consultFlagLowQuantity}= require("../src/Warehouse")
 
 describe("Gestion des stocks", () => {
     
     beforeEach(() => {
         // Réinitialisation du stock avant chaque test pour être plus à l'aise dans mes tests et manipulations de quantités
-        stock["Clavier"] = 0;
-        stock["Écran"] = 0;
-        stock["Casque"] = 0;
-        stock["Clé USB"] = 0;
+        stock = {
+            "Clavier": {
+                "quantity": 0,
+                "lowQuantityFlagTrigger": 10,
+                "lowQuantityFlag": true,
+                "outOfStockFlag": true
+            },
+            "Souris": {
+                "quantity": 0,
+                "lowQuantityFlagTrigger": 10,
+                "lowQuantityFlag": true,
+                "outOfStockFlag": true
+            },
+            "Ecran": {
+                "quantity": 0,
+                "lowQuantityFlagTrigger": 10,
+                "lowQuantityFlag": true,
+                "outOfStockFlag": true
+            },
+            "Clé USB": {
+                "quantity": 0,
+                "lowQuantityFlagTrigger": 10,
+                "lowQuantityFlag": true,
+                "outOfStockFlag": true
+            },
+        }
     });
 
 describe("Ajout de quantité à un article", () => {
@@ -21,7 +43,7 @@ describe("Ajout de quantité à un article", () => {
     });
 
     test("Ajout à un article inexistant : doit générer une erreur", () => {
-        expect(() => addQuantity("Casque", 5)).toThrow("Invalid article");
+        expect(() => addQuantity("Casque", 5)).toThrow("Article not found");
     });
 
     test("Ajout d'une quantité négative : doit générer une erreur", () => {
@@ -46,10 +68,12 @@ describe("Consultation de la quantité d'un article", () => {
     test("Article existant : doit retourner la quantité correcte", () => {
         addQuantity("Écran", 7);
         expect(consultQuantity("Écran")).toBe(7);
+        expect(consultFlagLowQuantity("Écran").toBe(true));
+        expect(consultFlagOutOfStock("Écran").toBe(false));
     });
 
     test("Article inexistant : doit générer une erreur", () => {
-        expect(() => consultQuantity("Tablette")).toThrow("Invalid article");
+        expect(() => consultQuantity("Tablette")).toThrow("Article not found");
     });
 });
 
@@ -63,11 +87,11 @@ describe("Retrait de quantité d'un article", () => {
     });
 
     test("Retrait d'un article inexistant : doit générer une erreur", () => {
-        expect(() => removeQuantity("Imprimante", 3)).toThrow("Invalid article");
+        expect(() => removeQuantity("Imprimante", 3)).toThrow("Article not found");
     });
 
     test("Retrait d'une quantité supérieure au stock disponible : doit générer une erreur", () => {
-        expect(() => removeQuantity("Clé USB", 100)).toThrow("Insufisant stock");
+        expect(() => removeQuantity("Clé USB", 100)).toThrow("Not enough quantity");
     });
 
     test("Retrait d'une quantité négative : doit générer une erreur", () => {
@@ -93,18 +117,19 @@ describe("Consultation du rapport de tous les articles", () => {
         addQuantity("Écran", 7);
         addQuantity("Clé USB", 10);
         addQuantity("Souris", 11);
-        expect(consultQuantity("Écran")).toBe(7);
-        expect(consultQuantity("Clé USB")).toBe(10);
-        expect(consultQuantity("Souris")).toBe(11);
-        expect(consultQuantity("Clavier")).toBe(0);
-        expect(consultFlagLowQuantity("Écran").toBe(true));
-        expect(consultFlagOutOfStock("Écran").toBe(false));
-        expect(consultFlagLowQuantity("Clé USB").toBe(true));
-        expect(consultFlagOutOfStock("Clé USB").toBe(false));
-        expect(consultFlagLowQuantity("Souris").toBe(false));
-        expect(consultFlagOutOfStock("Souris").toBe(false));
-        expect(consultFlagLowQuantity("Clavier").toBe(false));
-        expect(consultFlagOutOfStock("Clavier").toBe(true));
+        expect(consultJson().toBe({"Clavier":{"quantity":0,"lowQuantityFlagTrigger":10,"lowQuantityFlag":true,"outOfStockFlag":true},"Souris":{"quantity":11,"lowQuantityFlagTrigger":10,"lowQuantityFlag":false,"outOfStockFlag":false},"Ecran":{"quantity":7,"lowQuantityFlagTrigger":10,"lowQuantityFlag":true,"outOfStockFlag":false},"Clé USB":{"quantity":10,"lowQuantityFlagTrigger":10,"lowQuantityFlag":true,"outOfStockFlag":false}}))
+        // expect(consultQuantity("Écran")).toBe(7);
+        // expect(consultQuantity("Clé USB")).toBe(10);
+        // expect(consultQuantity("Souris")).toBe(11);
+        // expect(consultQuantity("Clavier")).toBe(0);
+        // expect(consultFlagLowQuantity("Écran").toBe(true));
+        // expect(consultFlagOutOfStock("Écran").toBe(false));
+        // expect(consultFlagLowQuantity("Clé USB").toBe(true));
+        // expect(consultFlagOutOfStock("Clé USB").toBe(false));
+        // expect(consultFlagLowQuantity("Souris").toBe(false));
+        // expect(consultFlagOutOfStock("Souris").toBe(false));
+        // expect(consultFlagLowQuantity("Clavier").toBe(true));
+        // expect(consultFlagOutOfStock("Clavier").toBe(true));
     });
 });
 });
