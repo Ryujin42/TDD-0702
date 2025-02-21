@@ -175,5 +175,6 @@ module.exports = {
     consultJson,
     setLowQuantityFlagTrigger,
     addQuantity,
-    removeQuantity
+    removeQuantity,
+    writeHistory
 };
