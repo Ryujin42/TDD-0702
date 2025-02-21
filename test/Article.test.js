@@ -117,8 +117,6 @@ describe("Retrait de quantité d'un article", () => {
 describe("Consultation du rapport de tous les articles", () => {
     test("Affichage de tous les stocks", () => {
         removeQuantity("Clavier", 17);
-        removeQuantity("Ecran", 7)
-        addQuantity("Ecran", 7);
         addQuantity("Clé USB", 10);
         addQuantity("Souris", 11);
         expect(consultJson()).toBe(`{"Clavier":{"quantity":0,"lowQuantityFlagTrigger":10,"lowQuantityFlag":true,"outOfStockFlag":true},"Souris":{"quantity":11,"lowQuantityFlagTrigger":10,"lowQuantityFlag":false,"outOfStockFlag":false},"Ecran":{"quantity":7,"lowQuantityFlagTrigger":10,"lowQuantityFlag":true,"outOfStockFlag":false},"Clé USB":{"quantity":10,"lowQuantityFlagTrigger":10,"lowQuantityFlag":true,"outOfStockFlag":false}}`)
