@@ -30,17 +30,17 @@ const stock = {
 
 function checkArticleName(articleName) {
     if (typeof articleName !== 'string') {
-        throw new Error('Article name must be a string');
+        throw new Error('Le nom de l\'article doit être une chaîne de caractères');
     }
 
     if (stock[articleName] === undefined) {
-        throw new Error('Article not found');
+        throw new Error('Article introuvable');
     }
 }
 
 function checkQuantity(quantity) {
     if (typeof quantity !== 'number' || !Number.isInteger(quantity) || quantity < 0) {
-        throw new Error('Quantity must be a positive integer');
+        throw new Error('La quantité doit être un entier positif');
     }
 }
 
@@ -63,59 +63,48 @@ function writeHistory(action) {
     }
 }
 
-function consultQuantity(articleName)
-{
+function consultQuantity(articleName) {
     checkArticleName(articleName);
-
     return stock[articleName].quantity;
 }
 
-function consultLowQuantityFlagTrigger(articleName)
-{
+function consultLowQuantityFlagTrigger(articleName) {
     checkArticleName(articleName);
-
     return stock[articleName].lowQuantityFlagTrigger;
 }
 
-function consultLowQuantityFlag(articleName)
-{
+function consultLowQuantityFlag(articleName) {
     checkArticleName(articleName);
-
     return stock[articleName].lowQuantityFlag;
 }
 
-function consultOutOfStockFlag(articleName)
-{
+function consultOutOfStockFlag(articleName) {
     checkArticleName(articleName);
-
     return stock[articleName].outOfStockFlag;
 }
 
-function consultJson()
-{
+function consultJson() {
     return JSON.stringify(stock);
 }
 
-function setLowQuantityFlagTrigger(articleName, lowQuantityFlagTrigger)
-{
+function setLowQuantityFlagTrigger(articleName, lowQuantityFlagTrigger) {
     checkArticleName(articleName);
 
     if (typeof lowQuantityFlagTrigger !== 'number' || !Number.isInteger(lowQuantityFlagTrigger) || lowQuantityFlagTrigger < 0) {
-        throw new Error('Low quantity flag trigger must be an integer');
+        throw new Error('Le déclencheur de drapeau de faible quantité doit être un entier');
     }
 
     if (lowQuantityFlagTrigger < 0) {
-        throw new Error('Low quantity flag trigger must be positive');
+        throw new Error('Le déclencheur de drapeau de faible quantité doit être positif');
     }
 
     stock[articleName].lowQuantityFlagTrigger = lowQuantityFlagTrigger;
     stock[articleName].lowQuantityFlag = stock[articleName].quantity <= lowQuantityFlagTrigger;
 
-    return `Low quantity flag trigger for article ${articleName} set to ${lowQuantityFlagTrigger}`;
+    return `Déclencheur de drapeau de faible quantité pour l'article ${articleName} défini à ${lowQuantityFlagTrigger}`;
 }
 
-function addQuantity(articleName, quantity)
-{
+function addQuantity(articleName, quantity) {
     checkArticleName(articleName);
     checkQuantity(quantity);
 
@@ -123,49 +112,43 @@ function addQuantity(articleName, quantity)
     stock[articleName].lowQuantityFlag = stock[articleName].quantity <= stock[articleName].lowQuantityFlagTrigger;
     stock[articleName].outOfStockFlag = stock[articleName].quantity === 0;
 
-    message = `Added ${quantity} to article ${articleName}`;
+    let message = `Ajout de ${quantity} à l'article ${articleName}`;
 
     if (stock[articleName].lowQuantityFlag) {
-        message += '\n[WARNING] Low quantity flag triggered';
+        message += '\n[AVERTISSEMENT] Article en faible quantité !';
     }
 
-    if (writeHistory(`Added ${quantity} to article ${articleName}`) === 1) {
-        message += '\n[WARNING] Could not write to history.log';
+    if (writeHistory(`Ajout de ${quantity} à l'article ${articleName}`) === 1) {
+        message += '\n[AVERTISSEMENT] Impossible d\'écrire dans history.log';
     }
 
     return message;
 }
 
-function removeQuantity(articleName, quantity)
-{
+function removeQuantity(articleName, quantity) {
     checkArticleName(articleName);
     checkQuantity(quantity);
 
     if (stock[articleName].quantity < quantity) {
-        throw new Error('Not enough quantity');
+        throw new Error('Quantité insuffisante');
     }
 
     stock[articleName].quantity -= quantity;
     stock[articleName].lowQuantityFlag = stock[articleName].quantity <= stock[articleName].lowQuantityFlagTrigger;
     stock[articleName].outOfStockFlag = stock[articleName].quantity === 0;
 
-    message = `Removed ${quantity} from article ${articleName}`;
+    let message = `Retrait de ${quantity} de l'article ${articleName}`;
 
     if (stock[articleName].lowQuantityFlag) {
-        message += '\n[WARNING] Low quantity flag triggered';
+        message += '\n[AVERTISSEMENT] Article en faible quantité !';
     }
 
-    if (writeHistory(`Removed ${quantity} from article ${articleName}`) === 1) {
-        message += '\n[WARNING] Could not write to history.log';
+    if (writeHistory(`Retrait de ${quantity} de l'article ${articleName}`) === 1) {
+        message += '\n[AVERTISSEMENT] Impossible d\'écrire dans history.log';
     }
 
     return message;
 }
-
-// tests for history.log
-console.log(consultJson());
-addQuantity("Clavier", 10);
-console.log(consultJson());
 
 module.exports = {
     consultQuantity,
@@ -178,3 +161,4 @@ module.exports = {
     removeQuantity,
     writeHistory
 };
+
