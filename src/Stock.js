@@ -123,7 +123,7 @@ function addQuantity(articleName, quantity)
     }
 
     stock[articleName].quantity += quantity;
-    stock[articleName].lowQuantityFlag = quantity <= stock[articleName].lowQuantityFlagTrigger;
+    stock[articleName].lowQuantityFlag = stock[articleName].quantity <= stock[articleName].lowQuantityFlagTrigger;
     stock[articleName].outOfStockFlag = stock[articleName].quantity === 0;
 
     return stock[articleName].quantity;
@@ -148,7 +148,7 @@ function removeQuantity(articleName, quantity)
     }
 
     stock[articleName].quantity -= quantity;
-    stock[articleName].lowQuantityFlag = quantity <= stock[articleName].lowQuantityFlagTrigger;
+    stock[articleName].lowQuantityFlag = stock[articleName].quantity <= stock[articleName].lowQuantityFlagTrigger;
     stock[articleName].outOfStockFlag = stock[articleName].quantity === 0;
 
     return stock[articleName].quantity;
