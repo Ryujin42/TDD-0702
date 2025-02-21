@@ -147,20 +147,6 @@ function consultHistory()
     return history;
 }
 
-// test with some commands
-addQuantity("Clavier", 10);
-addQuantity("Souris", 5);
-addQuantity("Ecran", 3);
-addQuantity("Clé USB", 1);
-removeQuantity("Clavier", 2);
-addQuantity("Clavier", 3);
-removeQuantity("Clavier", 1);
-addQuantity("Clavier", 5);
-addQuantity("Clavier", 1);
-removeQuantity("Clavier", 2);
-console.log(consultJson());
-console.log(consultHistory());
-
 module.exports = {
     consultQuantity,
     consultLowQuantityFlagTrigger,
