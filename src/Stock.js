@@ -116,6 +116,10 @@ function addQuantity(articleName, quantity)
 
     message = `Added ${quantity} to article ${articleName}`;
 
+    if (stock[articleName].lowQuantityFlag) {
+        message += '\n[WARNING] Low quantity flag triggered';
+    }
+
     if (writeHistory(`Added ${quantity} to article ${articleName}`) === 1) {
         message += '\n[WARNING] Could not write to history.log';
     }
@@ -137,6 +141,10 @@ function removeQuantity(articleName, quantity)
     stock[articleName].outOfStockFlag = stock[articleName].quantity === 0;
 
     message = `Removed ${quantity} from article ${articleName}`;
+
+    if (stock[articleName].lowQuantityFlag) {
+        message += '\n[WARNING] Low quantity flag triggered';
+    }
 
     if (writeHistory(`Removed ${quantity} from article ${articleName}`) === 1) {
         message += '\n[WARNING] Could not write to history.log';
