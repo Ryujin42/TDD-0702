@@ -49,20 +49,20 @@ describe("Ajout de quantité à un article", () => {
     });
 
     test("Ajout d'une quantité négative : doit générer une erreur", () => {
-        expect(() => addQuantity("Clavier", -5)).toThrow("Quantity must be positive");
+        expect(() => addQuantity("Clavier", -5)).toThrow("Quantity must be a positive integer");
     });
 
     test("Ajout d'une quantité float : doit générer une erreur", () => {
-        expect(() => addQuantity("Clavier", 3.5)).toThrow("Quantity must be positive");
+        expect(() => addQuantity("Clavier", 3.5)).toThrow("Quantity must be a positive integer");
     });
 
     test("Ajout d'une quantité non valide (texte) : doit générer une erreur", () => {
-        expect(() => addQuantity("Clavier", "dix")).toThrow("Quantity must be positive");
+        expect(() => addQuantity("Clavier", "dix")).toThrow("Quantity must be a positive positive");
     });
 
     test("Ajout d'une quantité null ou undefined : doit générer une erreur", () => {
-        expect(() => addQuantity("Clavier", null)).toThrow("Quantity must be positive");
-        expect(() => addQuantity("Clavier", undefined)).toThrow("Quantity must be positive");
+        expect(() => addQuantity("Clavier", null)).toThrow("Quantity must be a positive integer");
+        expect(() => addQuantity("Clavier", undefined)).toThrow("Quantity must be a positive integer");
     });
 });
 
@@ -97,20 +97,20 @@ describe("Retrait de quantité d'un article", () => {
     });
 
     test("Retrait d'une quantité négative : doit générer une erreur", () => {
-        expect(() => removeQuantity("Clé USB", -2)).toThrow("Quantity must be positive");
+        expect(() => removeQuantity("Clé USB", -2)).toThrow("Quantity must be a positive integer");
     });
 
     test("Retrait d'une quantité non entière (nombre à virgule) : doit générer une erreur", () => {
-        expect(() => removeQuantity("Clé USB", 2.5)).toThrow("Quantity must be positive");
+        expect(() => removeQuantity("Clé USB", 2.5)).toThrow("Quantity must be a positive integer");
     });
 
     test("Retrait d'une quantité non valide (texte) : doit générer une erreur", () => {
-        expect(() => removeQuantity("Clé USB", "cinq")).toThrow("Quantity must be positive");
+        expect(() => removeQuantity("Clé USB", "cinq")).toThrow("Quantity must be a positive integer");
     });
 
     test("Retrait d'une quantité null ou undefined : doit générer une erreur", () => {
-        expect(() => removeQuantity("Clé USB", null)).toThrow("Quantity must be positive");
-        expect(() => removeQuantity("Clé USB", undefined)).toThrow("Quantity must be positive");
+        expect(() => removeQuantity("Clé USB", null)).toThrow("Quantity must be a positive integer");
+        expect(() => removeQuantity("Clé USB", undefined)).toThrow("Quantity must be a positive integer");
     });
 });
 
@@ -119,7 +119,7 @@ describe("Consultation du rapport de tous les articles", () => {
         addQuantity("Écran", 7);
         addQuantity("Clé USB", 10);
         addQuantity("Souris", 11);
-        expect(consultJson().toBe({"Clavier":{"quantity":0,"lowQuantityFlagTrigger":10,"lowQuantityFlag":true,"outOfStockFlag":true},"Souris":{"quantity":11,"lowQuantityFlagTrigger":10,"lowQuantityFlag":false,"outOfStockFlag":false},"Ecran":{"quantity":7,"lowQuantityFlagTrigger":10,"lowQuantityFlag":true,"outOfStockFlag":false},"Clé USB":{"quantity":10,"lowQuantityFlagTrigger":10,"lowQuantityFlag":true,"outOfStockFlag":false}}))
+        expect(consultJson().toBe(`{"Clavier":{"quantity":0,"lowQuantityFlagTrigger":10,"lowQuantityFlag":true,"outOfStockFlag":true},"Souris":{"quantity":11,"lowQuantityFlagTrigger":10,"lowQuantityFlag":false,"outOfStockFlag":false},"Ecran":{"quantity":7,"lowQuantityFlagTrigger":10,"lowQuantityFlag":true,"outOfStockFlag":false},"Clé USB":{"quantity":10,"lowQuantityFlagTrigger":10,"lowQuantityFlag":true,"outOfStockFlag":false}}`))
         // expect(consultQuantity("Écran")).toBe(7);
         // expect(consultQuantity("Clé USB")).toBe(10);
         // expect(consultQuantity("Souris")).toBe(11);
