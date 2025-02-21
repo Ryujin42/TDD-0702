@@ -1,3 +1,4 @@
+const fs = require('fs');
 const Article = require('./Article');
 
 const stock = {
@@ -26,7 +27,6 @@ const stock = {
         "outOfStockFlag": true
     },
 }
-const history = [];
 
 function checkArticleName(articleName) {
     if (typeof articleName !== 'string') {
@@ -44,14 +44,19 @@ function checkQuantity(quantity) {
     }
 }
 
+function writeHistory(action) {
+    try {
+        const date = new Date();
+        fs.appendFileSync('history.log', `${date.toISOString()} - ${action}\n`);
+        return 0;
+    } catch (error) {
+        return 1;
+    }
+}
+
 function consultQuantity(articleName)
 {
     checkArticleName(articleName);
-    history.push({
-        "date": new Date().toISOString(),
-        "operation": "consultQuantity",
-        "articleName": articleName,
-    });
 
     return stock[articleName].quantity;
 }
@@ -97,7 +102,7 @@ function setLowQuantityFlagTrigger(articleName, lowQuantityFlagTrigger)
     stock[articleName].lowQuantityFlagTrigger = lowQuantityFlagTrigger;
     stock[articleName].lowQuantityFlag = stock[articleName].quantity <= lowQuantityFlagTrigger;
 
-    return stock[articleName].lowQuantityFlagTrigger;
+    return `Low quantity flag trigger for article ${articleName} set to ${lowQuantityFlagTrigger}`;
 }
 
 function addQuantity(articleName, quantity)
@@ -109,14 +114,13 @@ function addQuantity(articleName, quantity)
     stock[articleName].lowQuantityFlag = stock[articleName].quantity <= stock[articleName].lowQuantityFlagTrigger;
     stock[articleName].outOfStockFlag = stock[articleName].quantity === 0;
 
-    history.push({
-        "date": new Date().toISOString(),
-        "operation": "addQuantity",
-        "articleName": articleName,
-        "quantity": quantity,
-    });
+    message = `Added ${quantity} to article ${articleName}`;
 
-    return stock[articleName].quantity;
+    if (writeHistory(`Added ${quantity} to article ${articleName}`) === 1) {
+        message += '\n[WARNING] Could not write to history.log';
+    }
+
+    return message;
 }
 
 function removeQuantity(articleName, quantity)
@@ -132,19 +136,13 @@ function removeQuantity(articleName, quantity)
     stock[articleName].lowQuantityFlag = stock[articleName].quantity <= stock[articleName].lowQuantityFlagTrigger;
     stock[articleName].outOfStockFlag = stock[articleName].quantity === 0;
 
-    history.push({
-        "date": new Date().toISOString(),
-        "operation": "removeQuantity",
-        "articleName": articleName,
-        "quantity": quantity,
-    });
+    message = `Removed ${quantity} from article ${articleName}`;
 
-    return stock[articleName].quantity;
-}
+    if (writeHistory(`Removed ${quantity} from article ${articleName}`) === 1) {
+        message += '\n[WARNING] Could not write to history.log';
+    }
 
-function consultHistory()
-{
-    return history;
+    return message;
 }
 
 module.exports = {
