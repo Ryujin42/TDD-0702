@@ -47,7 +47,8 @@ function checkQuantity(quantity) {
 function writeHistory(action) {
     try {
         const date = new Date();
-        fs.appendFileSync('history.log', `${date.toISOString()} - ${action}\n`);
+        const formattedDate = date.toISOString().replace('T', ' ').split('.')[0]; // Remove "T" and milliseconds, keep YYYY-MM-DD HH:MM:SS
+        fs.appendFileSync('history.log', `${formattedDate} - ${action}\n`);
         return 0;
     } catch (error) {
         return 1;
@@ -152,6 +153,11 @@ function removeQuantity(articleName, quantity)
 
     return message;
 }
+
+// tests for history.log
+console.log(consultJson());
+addQuantity("Clavier", 10);
+console.log(consultJson());
 
 module.exports = {
     consultQuantity,
