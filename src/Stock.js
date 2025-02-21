@@ -47,7 +47,15 @@ function checkQuantity(quantity) {
 function writeHistory(action) {
     try {
         const date = new Date();
-        const formattedDate = date.toISOString().replace('T', ' ').split('.')[0]; // Remove "T" and milliseconds, keep YYYY-MM-DD HH:MM:SS
+        const formattedDate = date.toLocaleString('fr-FR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+
         fs.appendFileSync('history.log', `${formattedDate} - ${action}\n`);
         return 0;
     } catch (error) {
